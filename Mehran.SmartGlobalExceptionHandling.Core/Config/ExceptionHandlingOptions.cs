@@ -1,0 +1,22 @@
+﻿namespace Mehran.SmartGlobalExceptionHandling.Core.Config;
+
+/// <summary>
+/// کلاس تنظیمات هندلینگ خطاها
+/// </summary>
+public class ExceptionHandlingOptions
+{
+    /// <summary>
+    /// نمایش جزئیات خطا در پاسخ
+    /// </summary>
+    public bool ShowDetails { get; set; } = false;
+
+    /// <summary>
+    /// فعال‌سازی لاگ خطاه
+    /// </summary>
+    public bool LogExceptions { get; set; } = true;
+
+    /// <summary>
+    /// پیام‌های پیش‌ فرض سفارشی
+    /// </summary>
+    public Dictionary<string, string> DefaultMessages { get; set; } = [];
+}

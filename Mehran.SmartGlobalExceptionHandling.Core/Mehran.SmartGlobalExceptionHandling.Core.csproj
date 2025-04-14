@@ -1,12 +1,27 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net9.0</TargetFramework>
+    <TargetFrameworks>net8.0;net9.0</TargetFrameworks>
     <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
+    <Nullable>disable</Nullable>
     <PackageId>Mehran.SmartGlobalExceptionHandling.Core</PackageId>
     <Title>Manage Exception Core</Title>
     <Authors>مهران قائدرحمت</Authors>
+    <RepositoryUrl>https://github.com/mehranrahmati1986/Mehran.SmartGlobalExceptionHandling.Core</RepositoryUrl>
+    <RepositoryType>GitHub</RepositoryType>
+	  <Description>
+		  <br>کتابخانه‌ای برای مدیریت حرفه‌ای استثناها (Exceptions) در پروژه‌های دات‌نت، با قابلیت‌هایی مانند ثبت خطا، ارسال نوتیفیکیشن (ایمیل، تلگرام، اسلک) و پشتیبانی از چندزبانگی (Localization).</br>
+		  <br>A robust .NET library for advanced exception handling with features like logging, multilingual support, and notifications via email, Slack, and Telegram.</br>
+		  <br>مكتبة قوية لإدارة الاستثناءات في مشاريع .NET، تدعم تسجيل الأخطاء، الإشعارات عبر البريد الإلكتروني وتيليجرام وسلاك، بالإضافة إلى دعم تعدد اللغات.</br>
+	  </Description>
   </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Http" Version="2.3.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.3.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.4" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="9.0.4" />
+    <PackageReference Include="Serilog" Version="4.2.0" />
+  </ItemGroup>
 
 </Project>
