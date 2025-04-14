@@ -1,0 +1,12 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <PackageId>Mehran.SmartGlobalExceptionHandling.Core</PackageId>
+    <Title>Manage Exception Core</Title>
+    <Authors>مهران قائدرحمت</Authors>
+  </PropertyGroup>
+
+</Project>
