@@ -78,17 +78,79 @@ public class TestController : ControllerBase
     }
 }
  ```
+
 ## If ShowDetails = true, the client will receive a response like:
 
 ```
 {
-  "traceId": "00-...-...",
-  "statusCode": 500,
-  "message": "You are not authorized to access this resource.",
-  "timestamp": "2025-04-14T12:34:56Z"
+  "statusCode": 400,
+  "message": "Validation failed.",
+  "details": "Some required fields are missing.",
+  "errors": [
+    {
+      "field": "Email",
+      "error": "Email is required."
+    },
+    {
+      "field": "Password",
+      "error": "Password must be at least 6 characters."
+    }
+  ],
+  "traceId": "e7fa2bcf-4724-43de-9d5b-9e2c4d44473c",
+  "timestamp": "2025-04-14T18:24:12.345Z",
+  "metaData": {
+    "userId": 123,
+    "userName": "john_doe"
+  }
 }
 
 ```
+
+## 🔍 What is MetaData?
+
+The MetaData property in the ErrorResponse<T> class is a generic container that allows you to include additional custom information with your error response. This makes your API responses more flexible and context-aware.
+
+✅ Use Cases:
+Returning user info on authentication errors
+
+Providing debug identifiers or environment info
+
+Sending extra data related to a failed operation
+
+```
+public class ErrorResponse<UserInfo>
+{
+    public UserInfo MetaData { get; set; }
+}
+```
+📌 You can pass any class as T, such as:
+
+UserInfo
+
+OrderDetails
+
+ErrorDebugInfo
+
+---
+
+
+## 🔎 ElasticSearch Or 🗄 DataBase
+```
+public class MyCustomLogger : IExceptionLogger
+{
+    public void Log(Exception exception)
+    {
+      // Send logs to ElasticSearch or any other service
+      // For example, using HTTP Client, or writing directly to file/database
+    }
+}
+
+```
+```
+builder.Services.AddSingleton<IExceptionLogger, MyCustomLogger>();
+```
+
+
 ### 📩 Notification Samples
 
 #### 📧 Email Notifier
@@ -296,14 +358,70 @@ public class TestController : ControllerBase
 
 ```
 {
-  "traceId": "00-...-...",
-  "statusCode": 500,
-  "message": "شما مجاز به دسترسی به این بخش نیستید.",
-  "timestamp": "2025-04-14T12:34:56Z"
+  "statusCode": 400,
+  "message": "اعتبارسنجی انجام نشد.",
+  "details": "برخی فیلدهای ضروری وارد نشده‌اند.",
+  "errors": [
+    {
+      "field": "Email",
+      "error": "ایمیل الزامی است."
+    },
+    {
+      "field": "Password",
+      "error": "رمز عبور باید حداقل ۶ کاراکتر باشد."
+    }
+  ],
+  "traceId": "e7fa2bcf-4724-43de-9d5b-9e2c4d44473c",
+  "timestamp": "2025-04-14T18:24:12.345Z",
+  "metaData": {
+    "userId": 123,
+    "userName": "john_doe"
+  }
+}
+```
+
+## 🔍 متا دیتا چیست؟
+
+ویژگی MetaData در کلاس ErrorResponse<T> یک پارامتر جنریک است که برای ارسال اطلاعات اضافه یا سفارشی همراه با پاسخ خطا استفاده می‌شود. این قابلیت باعث می‌شود پاسخ‌های API شما انعطاف‌پذیرتر و معنادارتر باشند.
+
+✅ کاربردها:
+ارسال اطلاعات کاربر هنگام خطای لاگین
+
+اضافه کردن اطلاعات اشکال‌زدایی یا محیط اجرا
+
+ارسال داده‌های مرتبط با عملیاتی که با خطا مواجه شده است
+
+```
+public class ErrorResponse<UserInfo>
+{
+    public UserInfo MetaData { get; set; }
+}
+```
+📌 شما می‌توانید هر نوع مدلی را به صورت T استفاده کنید مثل:
+
+UserInfo
+
+OrderDetails
+
+ErrorDebugInfo
+
+---
+
+## 🔎 ElasticSearch Or 🗄 DataBase
+```
+public class MyCustomLogger : IExceptionLogger
+{
+    public void Log(Exception exception)
+    {
+      // Send logs to ElasticSearch or any other service
+      // For example, using HTTP Client, or writing directly to file/database
+    }
 }
 
 ```
----
+```
+builder.Services.AddSingleton<IExceptionLogger, MyCustomLogger>();
+```
 
 ### فایل تنظیمات appsettings.json
 
@@ -426,12 +544,69 @@ public class TestController : ControllerBase
 
 ```
 {
-  "traceId": "00-...-...",
-  "statusCode": 500,
-  "message": "ليست لديك صلاحية للوصول إلى هذا المورد.",
-  "timestamp": "2025-04-14T12:34:56Z"
+  "statusCode": 400,
+  "message": "فشل التحقق من الصحة.",
+  "details": "بعض الحقول المطلوبة مفقودة.",
+  "errors": [
+    {
+      "field": "Email",
+      "error": "البريد الإلكتروني مطلوب."
+    },
+    {
+      "field": "Password",
+      "error": "كلمة المرور يجب أن تكون 6 أحرف على الأقل."
+    }
+  ],
+  "traceId": "e7fa2bcf-4724-43de-9d5b-9e2c4d44473c",
+  "timestamp": "2025-04-14T18:24:12.345Z",
+  "metaData": {
+    "userId": 123,
+    "userName": "john_doe"
+  }
 }
 
+```
+
+## 🔍 ما هو MetaData؟
+
+خاصية MetaData في الكلاس ErrorResponse<T> هي نوع عام (Generic) يُستخدم لإرفاق معلومات إضافية أو مخصصة مع رسالة الخطأ، مما يمنحك مرونة أعلى في تصميم واجهة برمجة التطبيقات (API).
+
+✅ أمثلة الاستخدام:
+إرسال معلومات المستخدم عند فشل تسجيل الدخول
+
+تضمين بيانات تصحيح الأخطاء أو معلومات البيئة
+
+إرسال تفاصيل إضافية متعلقة بالعملية التي فشلت
+
+```
+public class ErrorResponse<UserInfo>
+{
+    public UserInfo MetaData { get; set; }
+}
+```
+📌 يمكنك تمرير أي كائن كنوع T مثل:
+
+UserInfo
+
+OrderDetails
+
+ErrorDebugInfo
+
+
+## 🔎 ElasticSearch Or 🗄 DataBase
+```
+public class MyCustomLogger : IExceptionLogger
+{
+    public void Log(Exception exception)
+    {
+      // Send logs to ElasticSearch or any other service
+      // For example, using HTTP Client, or writing directly to file/database
+    }
+}
+
+```
+```
+builder.Services.AddSingleton<IExceptionLogger, MyCustomLogger>();
 ```
 ### إعدادات `appsettings.json`
 
