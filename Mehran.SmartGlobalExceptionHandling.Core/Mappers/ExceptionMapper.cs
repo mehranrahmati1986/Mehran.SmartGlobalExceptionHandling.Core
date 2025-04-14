@@ -11,9 +11,9 @@ namespace Mehran.SmartGlobalExceptionHandling.Core.Mappers;
 public class ExceptionMapper(
     IErrorMessageLocalizer localizer,
     IHttpContextAccessor httpContextAccessor,
-    IOptions<ExceptionHandlingOptions> options) : IExceptionMapper
+    IOptions<ExceptionHandlingOption> options) : IExceptionMapper
 {
-    private readonly ExceptionHandlingOptions _options = options.Value;
+    private readonly ExceptionHandlingOption _options = options.Value;
 
     private string GetLocalizedMessage(string key)
     {

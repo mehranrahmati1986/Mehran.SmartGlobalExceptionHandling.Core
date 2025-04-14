@@ -1,12 +1,12 @@
 ﻿using Mehran.SmartGlobalExceptionHandling.Core.Config;
-using Mehran.SmartGlobalExceptionHandling.Core.Enums;
 using Mehran.SmartGlobalExceptionHandling.Core.Localizations;
 using Mehran.SmartGlobalExceptionHandling.Core.Mappers;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Mehran.SmartGlobalExceptionHandling.Core.Middleware;
+namespace Mehran.SmartGlobalExceptionHandling.Core.Middleware.Extensions;
 
 /// <summary>
 /// اکستنشن برای افزودن سرویس‌های مدیریت خطا به DI
@@ -19,23 +19,28 @@ public static class ExceptionHandlingExtensions
     /// <param name="services">سرویس کالکشن برنامه</param>
     /// <param name="configure">تنظیمات اختیاری برای پیکربندی</param>
     /// <returns></returns>
-    public static IServiceCollection AddMehranExceptionHandling(this IServiceCollection services, Action<ExceptionHandlingOptions> configure = null)
+    public static IServiceCollection AddMehranExceptionHandling(
+        this IServiceCollection services,
+        IConfiguration configuration,
+        Action<ExceptionHandlingOption> configure = null)
     {
         services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
         services.AddSingleton<IErrorMessageLocalizer, LocalizedErrorMessageLocalizer>();
         services.AddSingleton<IExceptionMapper, ExceptionMapper>();
 
-        // تنظیمات اختیاری برای پیکربندی
+        services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+        services.AddSingleton<IErrorMessageLocalizer, LocalizedErrorMessageLocalizer>();
+        services.AddSingleton<IExceptionMapper, ExceptionMapper>();
+
+        services.Configure<ExceptionHandlingOption>(op =>
+        {
+            configuration.GetSection(nameof(ExceptionHandlingOption)).Bind(op);
+        });
+
+        // اعمال override اگر configure ارائه شده باشه
         if (configure != null)
         {
             services.Configure(configure);
-        }
-        else
-        {
-            services.Configure<ExceptionHandlingOptions>(options =>
-            {
-                options.Language = SupportedLanguage.Fa;
-            });
         }
 
         return services;

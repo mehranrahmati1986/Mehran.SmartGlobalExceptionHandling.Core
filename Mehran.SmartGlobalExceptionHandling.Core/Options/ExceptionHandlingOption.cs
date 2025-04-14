@@ -5,7 +5,7 @@ namespace Mehran.SmartGlobalExceptionHandling.Core.Config;
 /// <summary>
 /// کلاس تنظیمات هندلینگ خطاها
 /// </summary>
-public class ExceptionHandlingOptions
+public class ExceptionHandlingOption
 {
     /// <summary>
     /// نمایش جزئیات خطا در پاسخ

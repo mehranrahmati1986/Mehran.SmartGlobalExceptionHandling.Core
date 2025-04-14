@@ -7,7 +7,7 @@ using System.Globalization;
 namespace Mehran.SmartGlobalExceptionHandling.Core.Middleware;
 
 // میدلویر برای تنظیم خودکار زبان براساس درخواست
-public class RequestLocalizationMiddleware(IOptions<ExceptionHandlingOptions> options)
+public class RequestLocalizationMiddleware(IOptions<ExceptionHandlingOption> options)
 {
     // زبان‌های پشتیبانی‌شده
     private static readonly List<string> _supportedCultures = ["fa", "en", "ar"];
