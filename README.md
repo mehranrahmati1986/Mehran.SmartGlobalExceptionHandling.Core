@@ -204,7 +204,7 @@ services.AddSingleton<IErrorMessageLocalizer, CustomErrorMessageLocalizer>();
 
 ---
 
-### ویژگی‌ها
+### ✅ ویژگی‌ها
 
 - 🚨 پشتیبانی از خطاهای سیستمی، تجاری، شبکه‌ای و...
 - 🌍 پشتیبانی از سه زبان (فارسی، انگلیسی، عربی)
@@ -215,7 +215,7 @@ services.AddSingleton<IErrorMessageLocalizer, CustomErrorMessageLocalizer>();
 
 ---
 
-### نصب
+### 🛠 نصب
 
 ```bash
 Install-Package Mehran.SmartGlobalExceptionHandling.Core
@@ -223,7 +223,7 @@ Install-Package Mehran.SmartGlobalExceptionHandling.Core
 
 ---
 
-### تنظیمات اولیه
+### ⚙️ تنظیمات اولیه
 
 ```csharp
 services.AddExceptionHandling(options =>
@@ -292,7 +292,7 @@ public class TelegramNotificationNotifier : IExceptionNotifier
 
 ---
 
-## 🇸🇦 الوثائق باللغة العربية
+## 🌐 🇸🇦 الوثائق باللغة العربية
 
 ### مقدمة
 
@@ -300,14 +300,7 @@ public class TelegramNotificationNotifier : IExceptionNotifier
 
 ---
 
-### الميزات
--  پشتیبانی از خطاهای سیستمی، تجاری، شبکه‌ای و...
--  پشتیبانی از سه زبان (فارسی، انگلیسی، عربی)
--  ارسال اعلان از طریق ایمیل، تلگرام و Slack
--  امکان لاگ‌گیری با سری لاگ، ELK و لاگر سفارشی
-- 💾 ذخیره خطاها در دیتابیس
--  قابل توسعه و سفارشی‌سازی
-
+### ✅ الميزات
 
 - 🚨 إدارة جميع أنواع الاستثناءات
 - 🌍 دعم للغة العربية والفارسية والإنجليزية
@@ -317,7 +310,7 @@ public class TelegramNotificationNotifier : IExceptionNotifier
 
 ---
 
-### التثبيت
+### 🛠 التثبيت
 
 ```bash
 Install-Package Mehran.SmartGlobalExceptionHandling.Core
@@ -325,7 +318,7 @@ Install-Package Mehran.SmartGlobalExceptionHandling.Core
 
 ---
 
-### الإعداد
+### ⚙️ الإعداد
 
 ```csharp
 services.AddExceptionHandling(options =>
