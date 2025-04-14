@@ -1,4 +1,6 @@
-﻿namespace Mehran.SmartGlobalExceptionHandling.Core.Config;
+﻿using Mehran.SmartGlobalExceptionHandling.Core.Enums;
+
+namespace Mehran.SmartGlobalExceptionHandling.Core.Config;
 
 /// <summary>
 /// کلاس تنظیمات هندلینگ خطاها
@@ -11,7 +13,7 @@ public class ExceptionHandlingOptions
     public bool ShowDetails { get; set; } = false;
 
     /// <summary>
-    /// فعال‌سازی لاگ خطاه
+    /// فعال‌سازی لاگ خطا
     /// </summary>
     public bool LogExceptions { get; set; } = true;
 
@@ -19,4 +21,9 @@ public class ExceptionHandlingOptions
     /// پیام‌های پیش‌ فرض سفارشی
     /// </summary>
     public Dictionary<string, string> DefaultMessages { get; set; } = [];
+
+    /// <summary>
+    /// زبان پیش‌فرض برای پیام‌ها
+    /// </summary>
+    public SupportedLanguage Language { get; set; } = SupportedLanguage.Fa;
 }

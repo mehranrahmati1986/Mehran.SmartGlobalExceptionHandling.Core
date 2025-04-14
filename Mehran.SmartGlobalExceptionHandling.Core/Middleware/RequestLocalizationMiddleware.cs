@@ -1,28 +1,26 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Mehran.SmartGlobalExceptionHandling.Core.Config;
+using Mehran.SmartGlobalExceptionHandling.Core.Enums;
+using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Options;
 using System.Globalization;
 
 namespace Mehran.SmartGlobalExceptionHandling.Core.Middleware;
 
 // میدلویر برای تنظیم خودکار زبان براساس درخواست
-public class RequestLocalizationMiddleware(RequestDelegate next)
+public class RequestLocalizationMiddleware(IOptions<ExceptionHandlingOptions> options)
 {
+    // زبان‌های پشتیبانی‌شده
     private static readonly List<string> _supportedCultures = ["fa", "en", "ar"];
+    private readonly SupportedLanguage _userLanguage = options.Value.Language;
 
-    public async Task Invoke(HttpContext context)
+    public async Task Invoke(HttpContext context, RequestDelegate next)
     {
-        // ابتدا از هدر Accept-Language بخون
-        var lang = context.Request.Headers["Accept-Language"].ToString()?.Split(',')?.FirstOrDefault()?.Trim();
+        // اگر کاربر زبان خاصی رو انتخاب نکرده باشد، زبان پیش‌فرض استفاده می‌شود.
+        var lang = _userLanguage.ToString().ToLower();
 
-        // در صورت نیاز از Query هم چک کن
-        if (string.IsNullOrWhiteSpace(lang))
-        {
-            lang = context.Request.Query["lang"];
-        }
-
-        // بررسی صحت زبان و ست کردن فرهنگ
         if (!_supportedCultures.Contains(lang))
         {
-            lang = "fa"; // پیش‌فرض فارسی
+            lang = SupportedLanguage.Fa.ToString().ToLower(); // پیش‌فرض فارسی
         }
 
         var cultureInfo = new CultureInfo(lang);
@@ -32,4 +30,5 @@ public class RequestLocalizationMiddleware(RequestDelegate next)
         await next(context);
     }
 }
+
 

@@ -19,7 +19,7 @@ public static class ExceptionHandlingExtensions
     /// <param name="services">سرویس کالکشن برنامه</param>
     /// <param name="configure">تنظیمات اختیاری برای پیکربندی</param>
     /// <returns></returns>
-    public static IServiceCollection AddExceptionHandling(this IServiceCollection services, Action<ExceptionHandlingOptions> configure = null)
+    public static IServiceCollection AddMehranExceptionHandling(this IServiceCollection services, Action<ExceptionHandlingOptions> configure = null)
     {
         services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
         services.AddSingleton<IErrorMessageLocalizer, LocalizedErrorMessageLocalizer>();
