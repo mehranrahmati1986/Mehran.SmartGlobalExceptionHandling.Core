@@ -4,11 +4,11 @@
 
 ## 🌐 English Documentation
 
-# ExceptionHandling - .NET Core Exception Management Package
+# Mehran.SmartGlobalExceptionHandling.Core - .NET Core Exception Management Package
 
 ### Overview
 
-**ExceptionHandling** is a robust and extensible .NET Core middleware for capturing, handling, logging, and notifying unhandled exceptions. It is multilingual, customizable, and notification-friendly.
+**Mehran.SmartGlobalExceptionHandling.Core** is a robust and extensible .NET Core middleware for capturing, handling, logging, and notifying unhandled exceptions. It is multilingual, customizable, and notification-friendly.
 
 ---
 
@@ -200,7 +200,7 @@ services.AddSingleton<IErrorMessageLocalizer, CustomErrorMessageLocalizer>();
 
 ### معرفی
 
-پکیج **ExceptionHandling** برای مدیریت و کنترل خطاها در پروژه‌های .NET Core طراحی شده است. این پکیج قابلیت ثبت، گزارش، و ارسال اعلان در صورت وقوع خطا را دارد.
+پکیج **Mehran.SmartGlobalExceptionHandling.Core** برای مدیریت و کنترل خطاها در پروژه‌های .NET Core طراحی شده است. این پکیج قابلیت ثبت، گزارش، و ارسال اعلان در صورت وقوع خطا را دارد.
 
 ---
 
@@ -296,7 +296,7 @@ public class TelegramNotificationNotifier : IExceptionNotifier
 
 ### مقدمة
 
-حزمة **ExceptionHandling** توفر إدارة مركزية وشاملة للأخطاء في تطبيقات .NET Core مع دعم متعدد اللغات وإرسال التنبيهات.
+حزمة **Mehran.SmartGlobalExceptionHandling.Core** توفر إدارة مركزية وشاملة للأخطاء في تطبيقات .NET Core مع دعم متعدد اللغات وإرسال التنبيهات.
 
 ---
 
