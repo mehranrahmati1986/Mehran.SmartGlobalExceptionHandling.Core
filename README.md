@@ -421,6 +421,18 @@ public class TestController : ControllerBase
 }
 
 ```
+
+## مع تفعيل ShowDetails = true، تكون الاستجابة كالتالي:
+
+```
+{
+  "traceId": "00-...-...",
+  "statusCode": 500,
+  "message": "ليست لديك صلاحية للوصول إلى هذا المورد.",
+  "timestamp": "2025-04-14T12:34:56Z"
+}
+
+```
 ### إعدادات `appsettings.json`
 
 ```json
