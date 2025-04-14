@@ -57,7 +57,38 @@ public void Configure(IApplicationBuilder app)
     app.UseCustomExceptionHandling();
 }
 ```
+## 🚀 Usage Example
+Here's how to simulate an unhandled exception inside your controller:
+```
 
+[ApiController]
+[Route("api/[controller]")]
+public class TestController : ControllerBase
+{
+    [HttpGet("unauthorized")]
+    public IActionResult GetUnauthorized()
+    {
+        throw new UnauthorizedAccessException("You are not authorized to access this resource.");
+    }
+
+    [HttpGet("custom")]
+    public IActionResult GetCustomError()
+    {
+        throw new ApplicationException("This is a custom application exception.");
+    }
+}
+ ```
+## If ShowDetails = true, the client will receive a response like:
+
+```
+{
+  "traceId": "00-...-...",
+  "statusCode": 500,
+  "message": "You are not authorized to access this resource.",
+  "timestamp": "2025-04-14T12:34:56Z"
+}
+
+```
 ### 📩 Notification Samples
 
 #### 📧 Email Notifier
@@ -239,6 +270,39 @@ services.AddSingleton<IExceptionNotifier, TelegramNotificationNotifier>();
 services.Configure<EmailSettings>(Configuration.GetSection("EmailSettings"));
 ```
 
+## 🚀 نمونه استفاده
+برای تست عملکرد پکیج، می‌تونید از کنترلر زیر استفاده کنید:
+```
+
+[ApiController]
+[Route("api/[controller]")]
+public class TestController : ControllerBase
+{
+    [HttpGet("unauthorized")]
+    public IActionResult GetUnauthorized()
+    {
+        throw new UnauthorizedAccessException("شما مجاز به دسترسی به این بخش نیستید.");
+    }
+
+    [HttpGet("custom")]
+    public IActionResult GetCustomError()
+    {
+        throw new ApplicationException("این یک خطای سفارشی برنامه است.");
+    }
+}
+
+ ```
+## در صورتی که ShowDetails = true باشد، خروجی مشابه زیر دریافت می‌شود:
+
+```
+{
+  "traceId": "00-...-...",
+  "statusCode": 500,
+  "message": "شما مجاز به دسترسی به این بخش نیستید.",
+  "timestamp": "2025-04-14T12:34:56Z"
+}
+
+```
 ---
 
 ### فایل تنظیمات appsettings.json
@@ -334,8 +398,29 @@ services.AddSingleton<IExceptionNotifier, TelegramNotificationNotifier>();
 services.Configure<EmailSettings>(Configuration.GetSection("EmailSettings"));
 ```
 
----
+## 🚀 مثال للاستخدام
+قم بإضافة Controller للاختبار كما يلي:
 
+---
+```
+[ApiController]
+[Route("api/[controller]")]
+public class TestController : ControllerBase
+{
+    [HttpGet("unauthorized")]
+    public IActionResult GetUnauthorized()
+    {
+        throw new UnauthorizedAccessException("ليست لديك صلاحية للوصول إلى هذا المورد.");
+    }
+
+    [HttpGet("custom")]
+    public IActionResult GetCustomError()
+    {
+        throw new ApplicationException("هذا خطأ مخصص من التطبيق.");
+    }
+}
+
+```
 ### إعدادات `appsettings.json`
 
 ```json
