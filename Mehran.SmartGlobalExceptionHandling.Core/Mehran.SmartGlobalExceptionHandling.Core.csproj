@@ -9,6 +9,7 @@
     <Authors>مهران قائدرحمت</Authors>
     <RepositoryUrl>https://github.com/mehranrahmati1986/Mehran.SmartGlobalExceptionHandling.Core</RepositoryUrl>
     <RepositoryType>GitHub</RepositoryType>
+	  <Version>1.0.4</Version>
 	  <Description>
 		  <br>کتابخانه‌ای برای مدیریت حرفه‌ای استثناها (Exceptions) در پروژه‌های دات‌نت، با قابلیت‌هایی مانند ثبت خطا، ارسال نوتیفیکیشن (ایمیل، تلگرام، اسلک) و پشتیبانی از چندزبانگی (Localization).</br>
 		  <br>A robust .NET library for advanced exception handling with features like logging, multilingual support, and notifications via email, Slack, and Telegram.</br>
@@ -19,9 +20,16 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Http" Version="2.3.0" />
     <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.3.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Core" Version="2.3.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.4" />
     <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="9.0.4" />
     <PackageReference Include="Serilog" Version="4.2.0" />
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(TargetFramework)' == 'net9.0'">
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson">
+      <Version>9.0.4</Version>
+    </PackageReference>
   </ItemGroup>
 
 </Project>

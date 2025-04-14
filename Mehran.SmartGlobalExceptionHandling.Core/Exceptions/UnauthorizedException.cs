@@ -4,4 +4,10 @@
 /// خطای عدم احراز هویت
 /// </summary>
 /// <param name="message"></param>
-public class UnauthorizedException() : Exception("Unauthorized") { }
+public class UnauthorizedException(object metaData = null) : Exception("Unauthorized")
+{
+    /// <summary>
+    /// دیتای اضافی
+    /// </summary>
+    public object MetaData { get; } = metaData;
+}

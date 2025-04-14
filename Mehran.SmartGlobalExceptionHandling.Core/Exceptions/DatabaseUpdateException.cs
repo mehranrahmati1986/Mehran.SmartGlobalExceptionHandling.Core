@@ -8,7 +8,8 @@
 /// <param name="key"></param>
 public class DatabaseUpdateException(
     string entityName = null,
-    object key = null) : Exception("DbUpdate")
+    object key = null,
+    object metaData = null) : Exception("DbUpdate")
 {
     /// <summary>
     /// نام موجودیت
@@ -19,4 +20,9 @@ public class DatabaseUpdateException(
     /// کلید رکورد
     /// </summary>
     public object Key { get; } = key;
+
+    /// <summary>
+    /// دیتای اضافی
+    /// </summary>
+    public object MetaData { get; } = metaData;
 }

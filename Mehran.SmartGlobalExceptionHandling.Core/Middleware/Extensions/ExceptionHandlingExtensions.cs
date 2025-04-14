@@ -1,12 +1,12 @@
 ﻿using Mehran.SmartGlobalExceptionHandling.Core.Config;
+using Mehran.SmartGlobalExceptionHandling.Core.Enums;
 using Mehran.SmartGlobalExceptionHandling.Core.Localizations;
 using Mehran.SmartGlobalExceptionHandling.Core.Mappers;
-using Mehran.SmartGlobalExceptionHandling.Core.Middleware;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Mehran.SmartGlobalExceptionHandling.Core.Extensions;
+namespace Mehran.SmartGlobalExceptionHandling.Core.Middleware;
 
 /// <summary>
 /// اکستنشن برای افزودن سرویس‌های مدیریت خطا به DI
@@ -25,11 +25,18 @@ public static class ExceptionHandlingExtensions
         services.AddSingleton<IErrorMessageLocalizer, LocalizedErrorMessageLocalizer>();
         services.AddSingleton<IExceptionMapper, ExceptionMapper>();
 
-        // افزودن مپ‌کننده‌ی اکسپشن‌ها به مدل پاسخ
+        // تنظیمات اختیاری برای پیکربندی
         if (configure != null)
+        {
             services.Configure(configure);
+        }
         else
-            services.Configure<ExceptionHandlingOptions>(_ => { });
+        {
+            services.Configure<ExceptionHandlingOptions>(options =>
+            {
+                options.Language = SupportedLanguage.Fa;
+            });
+        }
 
         return services;
     }
@@ -45,4 +52,3 @@ public static class ExceptionHandlingExtensions
         return app.UseMiddleware<ExceptionHandlingMiddleware>();
     }
 }
-

@@ -7,5 +7,5 @@ namespace Mehran.SmartGlobalExceptionHandling.Core.Logging;
 /// </summary>
 public interface IExceptionNotifier
 {
-    Task NotifyAsync(Exception exception, ErrorResponse response);
+    Task NotifyAsync(Exception exception, ErrorResponse<object> response);
 }

@@ -23,10 +23,10 @@ public class ExceptionMapper(
         return localizer.Get(key);
     }
 
-    public ErrorResponse Map(Exception ex)
+    public ErrorResponse<object> Map(Exception ex)
     {
         var traceId = httpContextAccessor.HttpContext?.TraceIdentifier;
-        var result = new ErrorResponse
+        var result = new ErrorResponse<object>
         {
             StatusCode = 500,
             TraceId = traceId

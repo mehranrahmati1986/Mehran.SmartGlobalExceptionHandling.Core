@@ -20,7 +20,8 @@ public class LocalizedErrorMessageLocalizer : IErrorMessageLocalizer
             ["Timeout"] = "مهلت انجام درخواست به پایان رسید.",
             ["InvalidArgument"] = "پارامتر ارسالی نامعتبر است.",
             ["InvalidOperation"] = "عملیات در وضعیت فعلی مجاز نیست.",
-            ["DbUpdate"] = "خطا در ذخیره‌سازی اطلاعات در پایگاه داده."
+            ["DbUpdate"] = "خطا در ذخیره‌سازی اطلاعات در پایگاه داده.",
+            ["UnexpectedError"] = "یک خطای غیرمنتظره رخ داده است.",
         },
         ["en"] = new()
         {
@@ -35,7 +36,8 @@ public class LocalizedErrorMessageLocalizer : IErrorMessageLocalizer
             ["Timeout"] = "Request timed out.",
             ["InvalidArgument"] = "Invalid argument provided.",
             ["InvalidOperation"] = "Operation not allowed.",
-            ["DbUpdate"] = "Database update failed."
+            ["DbUpdate"] = "Database update failed.",
+            ["UnexpectedError"] = "An unexpected error occurred.",
         },
         ["ar"] = new()
         {
@@ -50,7 +52,8 @@ public class LocalizedErrorMessageLocalizer : IErrorMessageLocalizer
             ["Timeout"] = "انتهت مهلة الطلب.",
             ["InvalidArgument"] = "معامل غير صالح.",
             ["InvalidOperation"] = "العملية غير مسموح بها.",
-            ["DbUpdate"] = "فشل تحديث قاعدة البيانات."
+            ["DbUpdate"] = "فشل تحديث قاعدة البيانات.",
+            ["UnexpectedError"] = "حدث خطأ غير متوقع.",
         }
     };
 

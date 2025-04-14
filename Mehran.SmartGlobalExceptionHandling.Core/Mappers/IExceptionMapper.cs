@@ -4,5 +4,5 @@ namespace Mehran.SmartGlobalExceptionHandling.Core.Mappers;
 
 public interface IExceptionMapper
 {
-    ErrorResponse Map(Exception ex);
+    ErrorResponse<object> Map(Exception ex);
 }
