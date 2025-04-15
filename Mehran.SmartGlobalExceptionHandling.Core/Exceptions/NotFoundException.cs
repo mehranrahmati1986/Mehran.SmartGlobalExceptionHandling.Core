@@ -1,6 +1,4 @@
-﻿using Mehran.SmartGlobalExceptionHandling.Core.Localizations;
-
-namespace Mehran.SmartGlobalExceptionHandling.Core.Exceptions;
+﻿namespace Mehran.SmartGlobalExceptionHandling.Core.Exceptions;
 
 /// <summary>
 /// خطای عدم یافتن

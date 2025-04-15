@@ -1,5 +1,5 @@
-﻿using Mehran.SmartGlobalExceptionHandling.Core.Config;
-using Mehran.SmartGlobalExceptionHandling.Core.Enums;
+﻿using Mehran.SmartGlobalExceptionHandling.Core.Enums;
+using Mehran.SmartGlobalExceptionHandling.Core.Options;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
 using System.Globalization;

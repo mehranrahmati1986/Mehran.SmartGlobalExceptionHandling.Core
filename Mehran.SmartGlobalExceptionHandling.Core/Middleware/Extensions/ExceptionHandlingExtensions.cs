@@ -1,10 +1,11 @@
-﻿using Mehran.SmartGlobalExceptionHandling.Core.Config;
+﻿using Mehran.SmartGlobalExceptionHandling.Core.Enums;
 using Mehran.SmartGlobalExceptionHandling.Core.Localizations;
 using Mehran.SmartGlobalExceptionHandling.Core.Mappers;
+using Mehran.SmartGlobalExceptionHandling.Core.Options;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
 
 namespace Mehran.SmartGlobalExceptionHandling.Core.Middleware.Extensions;
 
@@ -19,36 +20,38 @@ public static class ExceptionHandlingExtensions
     /// <param name="services">سرویس کالکشن برنامه</param>
     /// <param name="configure">تنظیمات اختیاری برای پیکربندی</param>
     /// <returns></returns>
-    public static IServiceCollection AddMehranExceptionHandling(
-        this IServiceCollection services,
-        IConfiguration configuration,
-        Action<ExceptionHandlingOption> configure = null)
+    public static IServiceCollection AddMehranExceptionHandling(this IServiceCollection services, Action<ExceptionHandlingOption> configure = null)
     {
+        // اضافه کردن سرویس‌های وابسته
         services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
         services.AddSingleton<IErrorMessageLocalizer, LocalizedErrorMessageLocalizer>();
         services.AddSingleton<IExceptionMapper, ExceptionMapper>();
 
-        services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-        services.AddSingleton<IErrorMessageLocalizer, LocalizedErrorMessageLocalizer>();
-        services.AddSingleton<IExceptionMapper, ExceptionMapper>();
-
-        services.Configure<ExceptionHandlingOption>(op =>
-        {
-            configuration.GetSection(nameof(ExceptionHandlingOption)).Bind(op);
-        });
-
-        // اعمال override اگر configure ارائه شده باشه
+        // تنظیمات اختیاری برای پیکربندی
         if (configure != null)
         {
+            // اگر تنظیمات اختیاری ارائه شده باشد، اعمال می‌شود
             services.Configure(configure);
         }
+        else
+        {
+            // در غیر این صورت تنظیمات پیش‌فرض اعمال می‌شود
+            services.Configure<ExceptionHandlingOption>(options =>
+            {
+                options.Language = SupportedLanguage.Fa;  // زبان پیش‌فرض فارسی
+            });
+        }
+
+        // ثبت ExceptionHandlingOption به عنوان Singleton در DI
+        services.AddSingleton(sp =>
+            sp.GetRequiredService<IOptions<ExceptionHandlingOption>>().Value
+        );
 
         return services;
     }
 
     /// <summary>
-    ///  افزودن میدلور مدیریت خطا به 
-    ///  <br>pipeline</br>
+    ///  افزودن میدلور مدیریت خطا به pipeline
     /// </summary>
     /// <param name="app"></param>
     /// <returns></returns>

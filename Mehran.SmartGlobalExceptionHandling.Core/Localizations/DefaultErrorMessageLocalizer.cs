@@ -1,9 +1,13 @@
-﻿using System.Globalization;
+﻿using Mehran.SmartGlobalExceptionHandling.Core.Enums;
+using Mehran.SmartGlobalExceptionHandling.Core.Options;
+using Microsoft.Extensions.Options;
 
 namespace Mehran.SmartGlobalExceptionHandling.Core.Localizations;
 
-public class LocalizedErrorMessageLocalizer : IErrorMessageLocalizer
+public class LocalizedErrorMessageLocalizer(IOptions<ExceptionHandlingOption> options) : IErrorMessageLocalizer
 {
+    private readonly ExceptionHandlingOption _options = options.Value;
+
     // پیام‌های چند زبانه برای کلیدهای خطا
     private static readonly Dictionary<string, Dictionary<string, string>> _messages = new()
     {
@@ -59,13 +63,11 @@ public class LocalizedErrorMessageLocalizer : IErrorMessageLocalizer
 
     public string Get(string key)
     {
-        // دریافت زبان از HttpContext
-        var lang = CultureInfo.CurrentCulture.TwoLetterISOLanguageName;
+        var lang = _options.Language.ToString().ToLower();
 
         if (_messages.TryGetValue(lang, out var dict) && dict.TryGetValue(key, out var msg))
             return msg;
 
-        // زبان پیش‌فرض فارسی
         return _messages["fa"].TryGetValue(key, out var fallback) ? fallback : "خطا رخ داد.";
     }
 }

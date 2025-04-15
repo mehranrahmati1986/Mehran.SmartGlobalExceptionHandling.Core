@@ -1,7 +1,7 @@
-﻿using Mehran.SmartGlobalExceptionHandling.Core.Config;
-using Mehran.SmartGlobalExceptionHandling.Core.Exceptions;
+﻿using Mehran.SmartGlobalExceptionHandling.Core.Exceptions;
 using Mehran.SmartGlobalExceptionHandling.Core.Localizations;
 using Mehran.SmartGlobalExceptionHandling.Core.Models;
+using Mehran.SmartGlobalExceptionHandling.Core.Options;
 using Microsoft.AspNetCore.Http;
 using System.Text.Json;
 
@@ -49,6 +49,7 @@ public class ExceptionHandlingMiddleware(
                     Field = e.Field,
                     Message = e.Message
                 })];
+                errorResponse.MetaData = validationException.MetaData;
                 break;
 
             case BusinessException businessException:
@@ -57,19 +58,36 @@ public class ExceptionHandlingMiddleware(
                     ? errorMessageLocalizer.Get(businessException.Code)
                     : errorMessageLocalizer.Get("Business");
                 errorResponse.Details = option.ShowDetails ? businessException.Message : null;
+                errorResponse.MetaData = businessException.MetaData;
                 break;
 
             case NotFoundException notFoundException:
                 errorResponse.StatusCode = StatusCodes.Status404NotFound;
                 errorResponse.Message = errorMessageLocalizer.Get("NotFound");
                 errorResponse.Details = option.ShowDetails ? notFoundException.Message : null;
+                errorResponse.MetaData = notFoundException.MetaData;
                 break;
 
-            // بقیه‌ی اکسپشن‌ها رو هم می‌تونی اینجا اضافه کنی
+            // مثال‌های اضافی از خطاهای دیگر:
+            case ArgumentNullException argumentNullException:
+                errorResponse.StatusCode = StatusCodes.Status400BadRequest;
+                errorResponse.Message = errorMessageLocalizer.Get("ArgumentNull");
+                errorResponse.Details = option.ShowDetails ? argumentNullException.Message : null;
+                errorResponse.MetaData = argumentNullException.Data;
+                break;
 
+            case UnauthorizedAccessException unauthorizedAccessException:
+                errorResponse.StatusCode = StatusCodes.Status401Unauthorized;
+                errorResponse.Message = errorMessageLocalizer.Get("Unauthorized");
+                errorResponse.Details = option.ShowDetails ? unauthorizedAccessException.Message : null;
+                errorResponse.MetaData = unauthorizedAccessException.Data;
+                break;
+
+            // خطای پیش‌فرض برای سایر استثناها
             default:
                 errorResponse.Message = errorMessageLocalizer.Get("Unhandled");
                 errorResponse.Details = option.ShowDetails ? exception.ToString() : null;
+                errorResponse.MetaData = exception.Data;
                 break;
         }
 
@@ -85,6 +103,7 @@ public class ExceptionHandlingMiddleware(
         await context.Response.WriteAsync(responseJson);
     }
 }
+
 
 
 

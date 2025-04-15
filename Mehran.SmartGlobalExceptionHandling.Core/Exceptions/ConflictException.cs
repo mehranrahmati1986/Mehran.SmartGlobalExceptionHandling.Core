@@ -4,7 +4,8 @@
 /// خطای تعارض داده‌ها
 /// </summary>
 /// <param name="message"></param>
-public class ConflictException(object metaData = null) : Exception("Conflict") {
+public class ConflictException(object metaData = null) : Exception("Conflict")
+{
 
     /// <summary>
     /// دیتای اضافی

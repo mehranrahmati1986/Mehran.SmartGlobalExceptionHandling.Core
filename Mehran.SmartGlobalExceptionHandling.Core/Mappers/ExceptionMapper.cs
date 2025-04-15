@@ -1,7 +1,7 @@
-﻿using Mehran.SmartGlobalExceptionHandling.Core.Config;
-using Mehran.SmartGlobalExceptionHandling.Core.Exceptions;
+﻿using Mehran.SmartGlobalExceptionHandling.Core.Exceptions;
 using Mehran.SmartGlobalExceptionHandling.Core.Localizations;
 using Mehran.SmartGlobalExceptionHandling.Core.Models;
+using Mehran.SmartGlobalExceptionHandling.Core.Options;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;

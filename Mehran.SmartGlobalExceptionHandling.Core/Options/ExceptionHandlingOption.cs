@@ -1,6 +1,6 @@
 ﻿using Mehran.SmartGlobalExceptionHandling.Core.Enums;
 
-namespace Mehran.SmartGlobalExceptionHandling.Core.Config;
+namespace Mehran.SmartGlobalExceptionHandling.Core.Options;
 
 /// <summary>
 /// کلاس تنظیمات هندلینگ خطاها

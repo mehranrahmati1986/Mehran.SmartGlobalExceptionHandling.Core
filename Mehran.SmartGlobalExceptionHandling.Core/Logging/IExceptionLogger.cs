@@ -1,6 +1,4 @@
-﻿using Mehran.SmartGlobalExceptionHandling.Core.Models;
-
-namespace Mehran.SmartGlobalExceptionHandling.Core.Logging;
+﻿namespace Mehran.SmartGlobalExceptionHandling.Core.Logging;
 
 /// <summary>
 /// اینترفیس برای لاگ‌کردن خطاها
