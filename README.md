@@ -337,6 +337,10 @@ services.AddExceptionHandling(options =>
 {
     options.ShowDetails = true;
     options.LogExceptions = true;
+options.Language = SupportedLanguage.En; // Change language (En, Fa, Ar)
+        options.HandleFluentValidationErrors = true;      // Enable FluentValidation error handling
+        options.ConfigureFluentValidationLanguage = true;   // Automatically configure FluentValidation language
+    });
 });
 
 services.AddSingleton<IExceptionNotifier, SmtpEmailNotifier>();
@@ -534,6 +538,10 @@ services.AddExceptionHandling(options =>
 {
     options.ShowDetails = true;
     options.LogExceptions = true;
+options.Language = SupportedLanguage.En; // Change language (En, Fa, Ar)
+        options.HandleFluentValidationErrors = true;      // Enable FluentValidation error handling
+        options.ConfigureFluentValidationLanguage = true;   // Automatically configure FluentValidation language
+    });
 });
 
 services.AddSingleton<IExceptionNotifier, SmtpEmailNotifier>();
