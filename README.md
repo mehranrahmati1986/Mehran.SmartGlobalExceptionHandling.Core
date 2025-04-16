@@ -22,7 +22,7 @@
 - 🧾 **Pluggable Logging Support:** Works with Console, Serilog, ELK, and other logging frameworks.
 - 💾 **Optional Error Storage:** Save errors in SQL database.
 - ⚙️ **Easy Setup and Extensibility:** Rapid integration and customization.
-- ⭐ **Advanced FluentValidation Support (v1.0.6+):**  
+- ⭐ **Advanced FluentValidation Support**  
   Optional automatic language configuration for validation messages is provided.  
   *(Note: The Mehran.SmartGlobalExceptionHandling.Core version must be 1.0.6 or later to enable this feature.)*
 
@@ -316,7 +316,7 @@ services.AddSingleton<IErrorMessageLocalizer, CustomErrorMessageLocalizer>();
 - 🧾 **لاگ‌گیری پلاگین‌پذیر:** پشتیبانی از لاگ‌گیری با کنسول، Serilog، ELK و سایر ابزارها.
 - 💾 **ذخیره اختیاری:** امکان ذخیره خطاها در پایگاه داده.
 - ⚙️ **تنظیم و توسعه آسان:** راه‌اندازی سریع و تنظیمات سفارشی.
-- ⭐ **پشتیبانی پیشرفته از FluentValidation (نسخه ۱.۰.۶ و بالاتر):**  
+- ⭐ **پشتیبانی پیشرفته از FluentValidation**  
   پیکربندی خودکار اختیاری زبان پیام‌های اعتبارسنجی بر مبنای تنظیمات انتخاب‌شده.  
   *(توجه: پکیج Mehran.SmartGlobalExceptionHandling.Core باید نسخه ۱.۰.۶ یا بالاتر باشد.)*
 
@@ -513,7 +513,7 @@ Made with ❤️ by Mehran Ghaederahmat
 - 🧾 **دعم تسجيل مرن:** متوافق مع أنظمة تسجيل متعددة مثل Serilog، ELK والمزيد.
 - 💾 **تخزين اختياري:** إمكانية حفظ الأخطاء في قواعد البيانات.
 - ⚙️ **تكوين وتوسعة سهلة:** إعداد سريع مع إمكانية تعديل الإعدادات.
-- ⭐ **دعم متقدم لـ FluentValidation (الإصدار 1.0.6 أو أحدث):**  
+- ⭐ **دعم متقدم لـ FluentValidation**  
   يحتوي على تكوين تلقائي اختياري للغة رسائل التحقق بناءً على الإعدادات.  
   *(تنبيه: يجب أن تكون نسخة Mehran.SmartGlobalExceptionHandling.Core المكتبة 1.0.6 أو أحدث.)*
 
