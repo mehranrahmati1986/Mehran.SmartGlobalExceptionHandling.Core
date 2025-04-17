@@ -1,7 +1,3 @@
-راهنما به 3 زبان انگلیسی فارسی و عربی
-
----
-
 # Mehran.SmartGlobalExceptionHandling.Core - .NET Core Exception Management Package
 
 ---
