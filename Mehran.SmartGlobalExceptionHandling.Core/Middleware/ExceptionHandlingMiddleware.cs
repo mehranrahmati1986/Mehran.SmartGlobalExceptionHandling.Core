@@ -1,8 +1,10 @@
 ﻿using Mehran.SmartGlobalExceptionHandling.Core.Exceptions;
+using Mehran.SmartGlobalExceptionHandling.Core.FluentValidations;
 using Mehran.SmartGlobalExceptionHandling.Core.Localizations;
 using Mehran.SmartGlobalExceptionHandling.Core.Models;
 using Mehran.SmartGlobalExceptionHandling.Core.Options;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Logging;
 using System.Text.Json;
 
 namespace Mehran.SmartGlobalExceptionHandling.Core.Middleware;
@@ -10,6 +12,7 @@ namespace Mehran.SmartGlobalExceptionHandling.Core.Middleware;
 public class ExceptionHandlingMiddleware(
     RequestDelegate next,
     IErrorMessageLocalizer errorMessageLocalizer,
+    ILogger<ExceptionHandlingMiddleware> logger,
     ExceptionHandlingOption option)
 {
     public async Task InvokeAsync(HttpContext context)
@@ -20,6 +23,11 @@ public class ExceptionHandlingMiddleware(
         }
         catch (Exception ex)
         {
+            if (option.LogExceptions)
+            {
+                logger.LogError(ex, "Unhandled exception occurred.");
+            }
+
             await HandleExceptionAsync(context, ex);
         }
     }
@@ -40,10 +48,11 @@ public class ExceptionHandlingMiddleware(
 
         switch (exception)
         {
-            case ValidationException validationException:
+            case Exceptions.ValidationException validationException:
                 errorResponse.StatusCode = StatusCodes.Status400BadRequest;
                 errorResponse.Message = errorMessageLocalizer.Get("Validation");
                 errorResponse.Details = option.ShowDetails ? validationException.Message : null;
+                errorResponse.StackTrace = validationException.StackTrace;
                 errorResponse.Errors = [.. validationException.Errors.Select(e => new ValidationError
                 {
                     Field = e.Field,
@@ -58,13 +67,15 @@ public class ExceptionHandlingMiddleware(
                     ? errorMessageLocalizer.Get(businessException.Code)
                     : errorMessageLocalizer.Get("Business");
                 errorResponse.Details = option.ShowDetails ? businessException.Message : null;
+                errorResponse.StackTrace = businessException.StackTrace;
                 errorResponse.MetaData = businessException.MetaData;
                 break;
 
             case NotFoundException notFoundException:
                 errorResponse.StatusCode = StatusCodes.Status404NotFound;
                 errorResponse.Message = errorMessageLocalizer.Get("NotFound");
-                errorResponse.Details = option.ShowDetails ? notFoundException.Message : null;
+                errorResponse.Details = notFoundException.GetType().Name;
+                errorResponse.StackTrace = notFoundException.StackTrace;
                 errorResponse.MetaData = notFoundException.MetaData;
                 break;
 
@@ -73,6 +84,7 @@ public class ExceptionHandlingMiddleware(
                 errorResponse.StatusCode = StatusCodes.Status400BadRequest;
                 errorResponse.Message = errorMessageLocalizer.Get("ArgumentNull");
                 errorResponse.Details = option.ShowDetails ? argumentNullException.Message : null;
+                errorResponse.StackTrace = argumentNullException.StackTrace;
                 errorResponse.MetaData = argumentNullException.Data;
                 break;
 
@@ -80,13 +92,42 @@ public class ExceptionHandlingMiddleware(
                 errorResponse.StatusCode = StatusCodes.Status401Unauthorized;
                 errorResponse.Message = errorMessageLocalizer.Get("Unauthorized");
                 errorResponse.Details = option.ShowDetails ? unauthorizedAccessException.Message : null;
+                errorResponse.StackTrace = unauthorizedAccessException.StackTrace;
                 errorResponse.MetaData = unauthorizedAccessException.Data;
                 break;
+
+            case FluentValidation.ValidationException fluentValidationException:
+                {
+                    // تنظیم زبان فقط زمانی که گزینه فعال باشه
+                    if (option.ConfigureFluentValidationLanguage)
+                    {
+                        FluentValidationConfigurator.ConfigureLanguage(option.Language);
+                    }
+
+                    if (option.HandleFluentValidationErrors)
+                    {
+                        var errors = fluentValidationException.Errors
+                            .GroupBy(e => e.PropertyName)
+                            .ToDictionary(
+                                g => g.Key,
+                                g => g.Select(e => e.ErrorMessage).ToArray());
+
+                        errorResponse.StatusCode = StatusCodes.Status422UnprocessableEntity;
+                        errorResponse.Message = errorMessageLocalizer.Get("Validation");
+                        errorResponse.FluentValidationErrors = errors;
+                        errorResponse.Details = option.ShowDetails ? fluentValidationException.ToString() : null;
+                        errorResponse.StackTrace = fluentValidationException.StackTrace;
+                        errorResponse.MetaData = fluentValidationException.Data;
+                    }
+
+                    break;
+                }
 
             // خطای پیش‌فرض برای سایر استثناها
             default:
                 errorResponse.Message = errorMessageLocalizer.Get("Unhandled");
                 errorResponse.Details = option.ShowDetails ? exception.ToString() : null;
+                errorResponse.StackTrace = exception.StackTrace;
                 errorResponse.MetaData = exception.Data;
                 break;
         }
@@ -103,8 +144,3 @@ public class ExceptionHandlingMiddleware(
         await context.Response.WriteAsync(responseJson);
     }
 }
-
-
-
-
-

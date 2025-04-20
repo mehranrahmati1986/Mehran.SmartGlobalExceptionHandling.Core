@@ -26,4 +26,14 @@ public class ExceptionHandlingOption
     /// زبان پیش‌فرض برای پیام‌ها
     /// </summary>
     public SupportedLanguage Language { get; set; } = SupportedLanguage.Fa;
+
+    /// <summary>
+    /// آیا خطاهای FluentValidation هندل شوند؟
+    /// </summary>
+    public bool HandleFluentValidationErrors { get; set; } = false;
+
+    /// <summary>
+    /// اگر True باشد، پیام‌های FluentValidation به زبان انتخاب‌شده پیکربندی می‌شوند.
+    /// </summary>
+    public bool ConfigureFluentValidationLanguage { get; set; } = false;
 }

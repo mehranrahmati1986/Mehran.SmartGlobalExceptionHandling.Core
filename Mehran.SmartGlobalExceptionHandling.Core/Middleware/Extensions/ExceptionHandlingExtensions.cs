@@ -1,5 +1,4 @@
-﻿using Mehran.SmartGlobalExceptionHandling.Core.Enums;
-using Mehran.SmartGlobalExceptionHandling.Core.Localizations;
+﻿using Mehran.SmartGlobalExceptionHandling.Core.Localizations;
 using Mehran.SmartGlobalExceptionHandling.Core.Mappers;
 using Mehran.SmartGlobalExceptionHandling.Core.Options;
 using Microsoft.AspNetCore.Builder;
@@ -22,6 +21,8 @@ public static class ExceptionHandlingExtensions
     /// <returns></returns>
     public static IServiceCollection AddMehranExceptionHandling(this IServiceCollection services, Action<ExceptionHandlingOption> configure = null)
     {
+        var defaultOptions = new ExceptionHandlingOption();
+
         // اضافه کردن سرویس‌های وابسته
         services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
         services.AddSingleton<IErrorMessageLocalizer, LocalizedErrorMessageLocalizer>();
@@ -30,30 +31,43 @@ public static class ExceptionHandlingExtensions
         // تنظیمات اختیاری برای پیکربندی
         if (configure != null)
         {
-            // اگر تنظیمات اختیاری ارائه شده باشد، اعمال می‌شود
             services.Configure(configure);
         }
         else
         {
-            // در غیر این صورت تنظیمات پیش‌فرض اعمال می‌شود
-            services.Configure<ExceptionHandlingOption>(options =>
+            // در صورت عدم ارائه تنظیمات سفارشی، از تنظیمات پیش‌فرض استفاده می‌شود
+            services.Configure<ExceptionHandlingOption>(opt =>
             {
-                options.Language = SupportedLanguage.Fa;  // زبان پیش‌فرض فارسی
+                opt.ShowDetails = defaultOptions.ShowDetails;
+                opt.LogExceptions = defaultOptions.LogExceptions;
+                opt.Language = defaultOptions.Language;
+                opt.HandleFluentValidationErrors = defaultOptions.HandleFluentValidationErrors;
+                opt.ConfigureFluentValidationLanguage = defaultOptions.ConfigureFluentValidationLanguage;
             });
         }
 
-        // ثبت ExceptionHandlingOption به عنوان Singleton در DI
         services.AddSingleton(sp =>
             sp.GetRequiredService<IOptions<ExceptionHandlingOption>>().Value
         );
+
+        // دریافت تنظیمات نهایی از DI به‌طور موقت
+        using (var serviceProvider = services.BuildServiceProvider())
+        {
+            var finalOptions = serviceProvider.GetRequiredService<IOptions<ExceptionHandlingOption>>().Value;
+            if (finalOptions.HandleFluentValidationErrors)
+            {
+                var errorLocalizer = serviceProvider.GetRequiredService<IErrorMessageLocalizer>();
+                services.AddCustomApiBehavior(errorLocalizer);
+            }
+        }
 
         return services;
     }
 
     /// <summary>
-    ///  افزودن میدلور مدیریت خطا به pipeline
+    /// افزودن میدلور مدیریت خطا به pipeline
     /// </summary>
-    /// <param name="app"></param>
+    /// <param name="app">اپلیکیشن بیلدر</param>
     /// <returns></returns>
     public static IApplicationBuilder UseCustomExceptionHandling(this IApplicationBuilder app)
     {

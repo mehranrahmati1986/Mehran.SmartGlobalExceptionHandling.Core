@@ -18,3 +18,4 @@ public class ValidationException(List<ValidationError> errors, object metaData =
     /// </summary>
     public object MetaData { get; } = metaData;
 }
+

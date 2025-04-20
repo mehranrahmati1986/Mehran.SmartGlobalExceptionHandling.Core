@@ -9,14 +9,15 @@
     <Authors>مهران قائدرحمت</Authors>
     <RepositoryUrl>https://github.com/mehranrahmati1986/Mehran.SmartGlobalExceptionHandling.Core</RepositoryUrl>
     <RepositoryType>GitHub</RepositoryType>
-	  <Version>1.0.4</Version>
+	  <Version>1.0.6</Version>
 	  <Description>
-یک کتابخانه قدرتمند برای دات نت جهت مدیریت پیشرفته استثناها با قابلیت‌هایی مانند ثبت لاگ، پشتیبانی چندزبانه، و ارسال اعلان از طریق ایمیل، اسلک و تلگرام.
+یک کتابخانه قدرتمند برای دات نت جهت مدیریت پیشرفته استثناها با قابلیت‌هایی مانند پشتیبانی کامل از خطاهای فلوئنت ولیدیشن، ثبت لاگ، پشتیبانی چندزبانه، و ارسال اعلان از طریق ایمیل، اسلک و تلگرام.
 	  </Description>
 	  <Company>ghaedrahmatmehran4@gmail.com</Company>
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="FluentValidation.AspNetCore" Version="11.3.0" />
     <PackageReference Include="Microsoft.AspNetCore.Http" Version="2.3.0" />
     <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.3.0" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Core" Version="2.3.0" />
