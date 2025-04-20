@@ -308,6 +308,138 @@ services.AddSingleton<IErrorMessageLocalizer, CustomErrorMessageLocalizer>();
 
 ---
 
+## 🌐 中文文档 (Chinese Documentation)
+概述
+
+Mehran.SmartGlobalExceptionHandling.Core 是一个强大且可扩展的.NET Core中间件，用于捕获、处理、记录和通知未处理的异常。它支持多语言、可定制且便于通知。
+✅ 功能特点
+
+    🚨 集中式错误处理： 捕获系统、业务、网络等各类异常。
+
+    🌍 内置本地化： 支持英语、波斯语、阿拉伯语，并可自定义本地化器。
+
+    🔔 通知系统： 通过电子邮件、Slack和Telegram发送错误通知。
+
+    🧾 可插拔日志支持： 兼容Console、Serilog、ELK等日志框架。
+
+    💾 可选错误存储： 将错误保存到SQL数据库。
+
+    ⚙️ 易于设置和扩展： 快速集成和定制。
+
+    ⭐ 高级FluentValidation支持
+    可选自动配置验证消息的语言。
+    (注意：需使用Mehran.SmartGlobalExceptionHandling.Core 1.0.6或更高版本。)
+
+    自1.0.7版本起，新增支持中文、俄语、法语、德语、印地语、日语、韩语、乌尔都语和西班牙语，并添加了许多新的异常类型以便使用。
+
+    🧠 该包即将加入人工智能功能，以更智能地协助错误分析和诊断。
+
+    支持处理的异常类型：
+    ValidationException, BusinessException, NotFoundException等（完整列表见原文）。
+
+    所有异常均可处理元数据。
+
+🛠 安装
+
+通过NuGet安装：
+bash
+
+Install-Package Mehran.SmartGlobalExceptionHandling.Core
+
+⚙️ 配置
+Program.cs / Startup.cs
+csharp
+
+public void ConfigureServices(IServiceCollection services)
+{
+    services.AddControllers();
+
+    // 注册异常处理服务
+    services.AddMehranExceptionHandling(options =>
+    {
+        options.ShowDetails = true;
+        options.LogExceptions = true;
+        options.StackTrace = false;
+        options.Language = SupportedLanguage.Zh; // 设置语言为中文
+        options.HandleFluentValidationErrors = true;
+        options.ConfigureFluentValidationLanguage = true;
+    });
+
+    // 注册通知服务
+    services.AddSingleton<IExceptionNotifier, SmtpEmailNotifier>();
+    services.AddSingleton<IExceptionNotifier, SlackNotificationNotifier>();
+    services.AddSingleton<IExceptionNotifier, TelegramNotificationNotifier>();
+
+    services.Configure<EmailSettings>(Configuration.GetSection("EmailSettings"));
+}
+
+---
+
+## 🌐 Русская документация (Russian Documentation)
+Обзор
+
+Mehran.SmartGlobalExceptionHandling.Core - это мощное и расширяемое промежуточное ПО для .NET Core, предназначенное для захвата, обработки, логирования и уведомления о необработанных исключениях. Поддерживает многоязычность, настройку и систему уведомлений.
+✅ Возможности
+
+    🚨 Централизованная обработка ошибок: Захват системных, бизнес, сетевых и других исключений.
+
+    🌍 Встроенная локализация: Поддержка английского, персидского, арабского языков с возможностью добавления кастомных локализаторов.
+
+    🔔 Система уведомлений: Отправка уведомлений через Email, Slack и Telegram.
+
+    🧾 Поддержка логирования: Совместимость с Console, Serilog, ELK и другими фреймворками.
+
+    💾 Хранение ошибок: Возможность сохранения ошибок в SQL базу данных.
+
+    ⚙️ Простая настройка: Быстрая интеграция и кастомизация.
+
+    ⭐ Поддержка FluentValidation
+    Автоматическая настройка языка для сообщений валидации.
+    (Требуется версия 1.0.6 или выше.)
+
+    Начиная с версии 1.0.7 добавлена поддержка китайского, русского, французского, немецкого, хинди, японского, корейского, урду и испанского языков, а также новые типы исключений.
+
+    🧠 В ближайшее время пакет будет оснащен ИИ-функциями для интеллектуального анализа ошибок.
+
+    Поддерживаемые исключения:
+    ValidationException, BusinessException, NotFoundException и другие (полный список в оригинале).
+
+    Все исключения поддерживают метаданные.
+
+🛠 Установка
+
+Через NuGet:
+bash
+
+Install-Package Mehran.SmartGlobalExceptionHandling.Core
+
+⚙️ Настройка
+Program.cs / Startup.cs
+csharp
+
+public void ConfigureServices(IServiceCollection services)
+{
+    services.AddControllers();
+
+    services.AddMehranExceptionHandling(options =>
+    {
+        options.ShowDetails = true;
+        options.LogExceptions = true;
+        options.StackTrace = false;
+        options.Language = SupportedLanguage.Ru; // Русский язык
+        options.HandleFluentValidationErrors = true;
+        options.ConfigureFluentValidationLanguage = true;
+    });
+
+    services.AddSingleton<IExceptionNotifier, SmtpEmailNotifier>();
+    services.AddSingleton<IExceptionNotifier, SlackNotificationNotifier>();
+    services.AddSingleton<IExceptionNotifier, TelegramNotificationNotifier>();
+
+    services.Configure<EmailSettings>(Configuration.GetSection("EmailSettings"));
+}
+
+---
+
 ## 🌐 🇮🇷 راهنمای فارسی
 
 ### معرفی
