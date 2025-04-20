@@ -9,11 +9,18 @@
     <Authors>مهران قائدرحمت</Authors>
     <RepositoryUrl>https://github.com/mehranrahmati1986/Mehran.SmartGlobalExceptionHandling.Core</RepositoryUrl>
     <RepositoryType>GitHub</RepositoryType>
-	  <Version>1.0.6</Version>
+	  <Version>1.0.20018</Version>
 	  <Description>
 یک کتابخانه قدرتمند برای دات نت جهت مدیریت پیشرفته استثناها با قابلیت‌هایی مانند پشتیبانی کامل از خطاهای فلوئنت ولیدیشن، ثبت لاگ، پشتیبانی چندزبانه، و ارسال اعلان از طریق ایمیل، اسلک و تلگرام.
 	  </Description>
 	  <Company>ghaedrahmatmehran4@gmail.com</Company>
+
+	  <PackageReleaseNotes>
+		  Added Support for Multiple Languages: Introduced support for the following languages: 
+		  Chinese, Russian, German, French, Japanese, Korean, Hindi, Urdu, and Spanish.​
+		  Enhanced Exception Handling: Implemented handling for new exception scenarios to improve application stability and error reporting.
+	  </PackageReleaseNotes>
+	  
   </PropertyGroup>
 
   <ItemGroup>
