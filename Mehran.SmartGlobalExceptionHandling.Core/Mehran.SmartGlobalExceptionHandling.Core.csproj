@@ -9,9 +9,10 @@
     <Authors>مهران قائدرحمت</Authors>
     <RepositoryUrl>https://github.com/mehranrahmati1986/Mehran.SmartGlobalExceptionHandling.Core</RepositoryUrl>
     <RepositoryType>GitHub</RepositoryType>
-	  <Version>1.0.20018</Version>
+	  <Version>1.0.7</Version>
 	  <Description>
-یک کتابخانه قدرتمند برای دات نت جهت مدیریت پیشرفته استثناها با قابلیت‌هایی مانند پشتیبانی کامل از خطاهای فلوئنت ولیدیشن، ثبت لاگ، پشتیبانی چندزبانه، و ارسال اعلان از طریق ایمیل، اسلک و تلگرام.
+		  A powerful .NET library for advanced exception management with features such as full support for FluentValidation errors, logging, multilingual support, and notifications via email, Slack, and Telegram.
+		  For complete usage documentation in multiple languages and practical code examples, please refer to the GitHub repository:
 	  </Description>
 	  <Company>ghaedrahmatmehran4@gmail.com</Company>
 
