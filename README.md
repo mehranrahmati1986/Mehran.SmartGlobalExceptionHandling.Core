@@ -25,7 +25,7 @@
 - 🧠 This package will soon be equipped with artificial intelligence capabilities to assist you more intelligently in error analysis and diagnostics.
 - Handling the following exceptions:
 - ValidationException, BusinessException, NotFoundException, ArgumentNullException, UnauthorizedAccessException, ValidationException, PaymentRequiredException, TooManyRequestsException, RequestTimeoutException, InvalidOperationException, DatabaseUpdateException, DbUpdateException, MethodNotAllowedException, NotAcceptableException, ProxyAuthenticationRequiredException, GoneException, LengthRequiredException, PreconditionFailedException, PayloadTooLargeException, UriTooLongException, UnsupportedMediaTypeException, RangeNotSatisfiableException, ExpectationFailedException, ImATeapotException, AuthenticationTimeoutException, MisdirectedRequestException, UnprocessableEntityException, LockedException, FailedDependencyException, UpgradeRequiredException, PreconditionRequiredException, RequestHeaderFieldsTooLargeException, UnavailableForLegalReasonsException, ClientClosedRequestException, NotImplementedHttpException, BadGatewayException, ServiceUnavailableException, GatewayTimeoutException, HttpVersionNotSupportedException, VariantAlsoNegotiatesException, InsufficientStorageException, LoopDetectedException, NotExtendedException, NetworkAuthenticationRequiredException
-- 
+- All exceptions can handle metadata
 ---
 
 ### 🛠 Installation
@@ -329,6 +329,7 @@ services.AddSingleton<IErrorMessageLocalizer, CustomErrorMessageLocalizer>();
   *(توجه: پکیج Mehran.SmartGlobalExceptionHandling.Core باید نسخه ۱.۰.۶ یا بالاتر باشد.)*
   -  از نسخه 1.0.7 پشتیبانی از زبان های چینی روسی، فرانسه، آلمانی، هندی، ژاپنی، کره ای، اردو و اسپانیایی هم برای شما فراهم شده و کلی اکسپشن های جدید رو بهش اضافه کردم برای راحتی کار شما عزیزان
   - 🧠 به‌زودی این پکیج به قابلیت‌های هوش مصنوعی مجهز خواهد شد تا در تحلیل و بررسی خطاها، بهتر و هوشمندانه‌تر به شما کمک کند.
+  - تمامی اکسپشن‌ها قابلیت پشتیبانی از متادیتا را دارند.
 
 ---
 
@@ -539,6 +540,7 @@ Made with ❤️ by Mehran Ghaederahmat
   *(تنبيه: يجب أن تكون نسخة Mehran.SmartGlobalExceptionHandling.Core المكتبة 1.0.6 أو أحدث.)*
   - اعتبارًا من الإصدار 1.0.7، تمت إضافة دعم للغات الصينية، الروسية، الفرنسية، الألمانية، الهندية، اليابانية، الكورية، الأردية، والإسبانية، بالإضافة إلى العديد من أنواع الاستثناءات الجديدة لتسهيل الأمور عليكم.
   - 🧠 قريبًا سيتم تزويد هذه الحزمة بقدرات الذكاء الاصطناعي لمساعدتك بشكل أكثر ذكاءً في تحليل وتشخيص الأخطاء.
+  - يمكن لجميع الاستثناءات التعامل مع البيانات الوصفية
 
 ---
 
