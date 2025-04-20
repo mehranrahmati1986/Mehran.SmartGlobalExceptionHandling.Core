@@ -21,7 +21,11 @@
 - ⭐ **Advanced FluentValidation Support**  
   Optional automatic language configuration for validation messages is provided.  
   *(Note: The Mehran.SmartGlobalExceptionHandling.Core version must be 1.0.6 or later to enable this feature.)*
-
+- Since version 1.0.7, support for Chinese, Russian, French, German, Hindi, Japanese, Korean, Urdu, and Spanish has been added, along with many new exception types to make things easier for you.
+- 🧠 This package will soon be equipped with artificial intelligence capabilities to assist you more intelligently in error analysis and diagnostics.
+- Handling the following exceptions:
+- ValidationException, BusinessException, NotFoundException, ArgumentNullException, UnauthorizedAccessException, ValidationException, PaymentRequiredException, TooManyRequestsException, RequestTimeoutException, InvalidOperationException, DatabaseUpdateException, DbUpdateException, MethodNotAllowedException, NotAcceptableException, ProxyAuthenticationRequiredException, GoneException, LengthRequiredException, PreconditionFailedException, PayloadTooLargeException, UriTooLongException, UnsupportedMediaTypeException, RangeNotSatisfiableException, ExpectationFailedException, ImATeapotException, AuthenticationTimeoutException, MisdirectedRequestException, UnprocessableEntityException, LockedException, FailedDependencyException, UpgradeRequiredException, PreconditionRequiredException, RequestHeaderFieldsTooLargeException, UnavailableForLegalReasonsException, ClientClosedRequestException, NotImplementedHttpException, BadGatewayException, ServiceUnavailableException, GatewayTimeoutException, HttpVersionNotSupportedException, VariantAlsoNegotiatesException, InsufficientStorageException, LoopDetectedException, NotExtendedException, NetworkAuthenticationRequiredException
+- 
 ---
 
 ### 🛠 Installation
@@ -33,6 +37,7 @@ Install-Package Mehran.SmartGlobalExceptionHandling.Core
 ```
 
 ---
+
 
 ### ⚙️ Configuration
 
@@ -48,7 +53,8 @@ public void ConfigureServices(IServiceCollection services)
     {
         options.ShowDetails = true;
         options.LogExceptions = true;
-        options.Language = SupportedLanguage.En; // Change language (En, Fa, Ar)
+        options.StackTrace = false;
+        options.Language = SupportedLanguage.En; // Change language (En, Fa, Ar, ...)
         options.HandleFluentValidationErrors = true;      // Enable FluentValidation error handling
         options.ConfigureFluentValidationLanguage = true;   // Automatically configure FluentValidation language
     });
@@ -104,6 +110,7 @@ public class TestController : ControllerBase
   "statusCode": 400,
   "message": "Validation failed.",
   "details": "Some required fields are missing.",
+  "stackTrace": null,
   "errors": [
     {
       "field": "Email",
@@ -119,6 +126,11 @@ public class TestController : ControllerBase
   "metaData": {
     "userId": 123,
     "userName": "john_doe"
+  },
+ "fluentValidationErrors": {
+    "Code": [
+      "The country code must consist of numbers only."
+    ]
   }
 }
 ```
@@ -315,6 +327,8 @@ services.AddSingleton<IErrorMessageLocalizer, CustomErrorMessageLocalizer>();
 - ⭐ **پشتیبانی پیشرفته از FluentValidation**  
   پیکربندی خودکار اختیاری زبان پیام‌های اعتبارسنجی بر مبنای تنظیمات انتخاب‌شده.  
   *(توجه: پکیج Mehran.SmartGlobalExceptionHandling.Core باید نسخه ۱.۰.۶ یا بالاتر باشد.)*
+  -  از نسخه 1.0.7 پشتیبانی از زبان های چینی روسی، فرانسه، آلمانی، هندی، ژاپنی، کره ای، اردو و اسپانیایی هم برای شما فراهم شده و کلی اکسپشن های جدید رو بهش اضافه کردم برای راحتی کار شما عزیزان
+  - 🧠 به‌زودی این پکیج به قابلیت‌های هوش مصنوعی مجهز خواهد شد تا در تحلیل و بررسی خطاها، بهتر و هوشمندانه‌تر به شما کمک کند.
 
 ---
 
@@ -333,10 +347,11 @@ services.AddExceptionHandling(options =>
 {
     options.ShowDetails = true;
     options.LogExceptions = true;
-options.Language = SupportedLanguage.En; // Change language (En, Fa, Ar)
-        options.HandleFluentValidationErrors = true;      // Enable FluentValidation error handling
-        options.ConfigureFluentValidationLanguage = true;   // Automatically configure FluentValidation language
-    });
+    options.StackTrace = false;
+    options.Language = SupportedLanguage.En; // Change language (En, Fa, Ar)
+    options.HandleFluentValidationErrors = true;      // Enable FluentValidation error handling
+    options.ConfigureFluentValidationLanguage = true;   // Automatically configure FluentValidation language
+ });
 });
 
 services.AddSingleton<IExceptionNotifier, SmtpEmailNotifier>();
@@ -378,6 +393,7 @@ public class TestController : ControllerBase
   "statusCode": 400,
   "message": "اعتبارسنجی انجام نشد.",
   "details": "برخی فیلدهای ضروری وارد نشده‌اند.",
+  "stackTrace": null,
   "errors": [
     {
       "field": "Email",
@@ -394,7 +410,12 @@ public class TestController : ControllerBase
     "userId": 123,
     "userName": "john_doe"
   }
-}
+},
+"fluentValidationErrors": {
+    "Code": [
+      "کد کشور باید فقط شامل اعداد باشد."
+    ]
+  }
 ```
 
 ---
@@ -516,6 +537,8 @@ Made with ❤️ by Mehran Ghaederahmat
 - ⭐ **دعم متقدم لـ FluentValidation**  
   يحتوي على تكوين تلقائي اختياري للغة رسائل التحقق بناءً على الإعدادات.  
   *(تنبيه: يجب أن تكون نسخة Mehran.SmartGlobalExceptionHandling.Core المكتبة 1.0.6 أو أحدث.)*
+  - اعتبارًا من الإصدار 1.0.7، تمت إضافة دعم للغات الصينية، الروسية، الفرنسية، الألمانية، الهندية، اليابانية، الكورية، الأردية، والإسبانية، بالإضافة إلى العديد من أنواع الاستثناءات الجديدة لتسهيل الأمور عليكم.
+  - 🧠 قريبًا سيتم تزويد هذه الحزمة بقدرات الذكاء الاصطناعي لمساعدتك بشكل أكثر ذكاءً في تحليل وتشخيص الأخطاء.
 
 ---
 
@@ -534,10 +557,11 @@ services.AddExceptionHandling(options =>
 {
     options.ShowDetails = true;
     options.LogExceptions = true;
-options.Language = SupportedLanguage.En; // Change language (En, Fa, Ar)
-        options.HandleFluentValidationErrors = true;      // Enable FluentValidation error handling
-        options.ConfigureFluentValidationLanguage = true;   // Automatically configure FluentValidation language
-    });
+    options.StackTrace = false;
+    options.Language = SupportedLanguage.En; // Change language (En, Fa, Ar)
+    options.HandleFluentValidationErrors = true;      // Enable FluentValidation error handling
+    options.ConfigureFluentValidationLanguage = true;   // Automatically configure FluentValidation language
+});
 });
 
 services.AddSingleton<IExceptionNotifier, SmtpEmailNotifier>();
@@ -579,6 +603,7 @@ public class TestController : ControllerBase
   "statusCode": 400,
   "message": "فشل التحقق من الصحة.",
   "details": "بعض الحقول المطلوبة مفقودة.",
+  "stackTrace": null,
   "errors": [
     {
       "field": "Email",
@@ -595,7 +620,12 @@ public class TestController : ControllerBase
     "userId": 123,
     "userName": "john_doe"
   }
-}
+},
+"fluentValidationErrors": {
+    "Code": [
+      "يجب أن يتكون رمز الدولة من أرقام فقط."
+    ]
+  }
 ```
 
 ---
