@@ -1,10 +1,8 @@
-راهنما به 3 زبان انگلیسی فارسی و عربی
+# Mehran.SmartGlobalExceptionHandling.Core - .NET Core Exception Management Package
 
 ---
 
 ## 🌐 English Documentation
-
-# Mehran.SmartGlobalExceptionHandling.Core - .NET Core Exception Management Package
 
 ### Overview
 
@@ -14,16 +12,21 @@
 
 ### ✅ Features
 
-- 🚨 Centralized error handling for system, business, and network exceptions
-- 🌍 Built-in localization (English, Persian, Arabic) and support for custom localizers
-- 🔔 Notification system via **Email**, **Slack**, and **Telegram**
-- 🧾 Pluggable logging support (Console, Serilog, ELK, etc.)
-- 💾 Optional storage of errors in SQL database
-- ⚙️ Easy setup and extensibility
+- 🚨 **Centralized Error Handling:** Capture system, business, network, and other exceptions.
+- 🌍 **Built-in Localization:** Supports English, Persian, and Arabic, with an option to use custom localizers.
+- 🔔 **Notification System:** Send error notifications via **Email**, **Slack**, and **Telegram**.
+- 🧾 **Pluggable Logging Support:** Works with Console, Serilog, ELK, and other logging frameworks.
+- 💾 **Optional Error Storage:** Save errors in SQL database.
+- ⚙️ **Easy Setup and Extensibility:** Rapid integration and customization.
+- ⭐ **Advanced FluentValidation Support**  
+  Optional automatic language configuration for validation messages is provided.  
+  *(Note: The Mehran.SmartGlobalExceptionHandling.Core version must be 1.0.6 or later to enable this feature.)*
 
 ---
 
 ### 🛠 Installation
+
+Install via NuGet:
 
 ```bash
 Install-Package Mehran.SmartGlobalExceptionHandling.Core
@@ -38,10 +41,16 @@ Install-Package Mehran.SmartGlobalExceptionHandling.Core
 ```csharp
 public void ConfigureServices(IServiceCollection services)
 {
-    services.AddExceptionHandling(options =>
+    services.AddControllers();
+
+    // Register the exception handling services with custom options
+    services.AddMehranExceptionHandling(options =>
     {
         options.ShowDetails = true;
         options.LogExceptions = true;
+        options.Language = SupportedLanguage.En; // Change language (En, Fa, Ar)
+        options.HandleFluentValidationErrors = true;      // Enable FluentValidation error handling
+        options.ConfigureFluentValidationLanguage = true;   // Automatically configure FluentValidation language
     });
 
     // Register your preferred notifiers
@@ -55,12 +64,21 @@ public void ConfigureServices(IServiceCollection services)
 public void Configure(IApplicationBuilder app)
 {
     app.UseCustomExceptionHandling();
+
+    app.UseEndpoints(endpoints =>
+    {
+        endpoints.MapControllers();
+    });
 }
 ```
-## 🚀 Usage Example
-Here's how to simulate an unhandled exception inside your controller:
-```
 
+---
+
+### 🚀 Usage Example
+
+Below is an example of a controller triggering unhandled exceptions:
+
+```csharp
 [ApiController]
 [Route("api/[controller]")]
 public class TestController : ControllerBase
@@ -77,11 +95,11 @@ public class TestController : ControllerBase
         throw new ApplicationException("This is a custom application exception.");
     }
 }
- ```
-
-## If ShowDetails = true, the client will receive a response like:
-
 ```
+
+#### Example Response (if ShowDetails = true)
+
+```json
 {
   "statusCode": 400,
   "message": "Validation failed.",
@@ -103,62 +121,57 @@ public class TestController : ControllerBase
     "userName": "john_doe"
   }
 }
-
 ```
 
-## 🔍 What is MetaData?
+---
 
-The MetaData property in the ErrorResponse<T> class is a generic container that allows you to include additional custom information with your error response. This makes your API responses more flexible and context-aware.
+### 🔍 What is MetaData?
 
-✅ Use Cases:
-Returning user info on authentication errors
+The **MetaData** property in the `ErrorResponse<T>` class is a generic container for including additional custom information with your error response.  
+**Use Cases:**  
+- Returning user information on authentication errors  
+- Providing debug identifiers or environment details  
+- Sending extra data related to a failed operation
 
-Providing debug identifiers or environment info
+For example:
 
-Sending extra data related to a failed operation
-
-```
+```csharp
 public class ErrorResponse<UserInfo>
 {
     public UserInfo MetaData { get; set; }
 }
 ```
-📌 You can pass any class as T, such as:
-
-UserInfo
-
-OrderDetails
-
-ErrorDebugInfo
 
 ---
 
+### 🔎 ElasticSearch or Database Logging
 
-## 🔎 ElasticSearch Or 🗄 DataBase
-```
+Example of a custom logger:
+
+```csharp
 public class MyCustomLogger : IExceptionLogger
 {
     public void Log(Exception exception)
     {
-      // Send logs to ElasticSearch or any other service
-      // For example, using HTTP Client, or writing directly to file/database
+        // Send logs to ElasticSearch, file, or any other destination
     }
 }
+```
 
-```
-```
+Register it:
+
+```csharp
 builder.Services.AddSingleton<IExceptionLogger, MyCustomLogger>();
 ```
 
+---
 
 ### 📩 Notification Samples
 
 #### 📧 Email Notifier
 
-```csharp
-### 🔧 appsettings.json
-
 ```json
+// appsettings.json
 {
   "EmailSettings": {
     "Host": "smtp.example.com",
@@ -167,17 +180,11 @@ builder.Services.AddSingleton<IExceptionLogger, MyCustomLogger>();
     "Username": "your_email@example.com",
     "Password": "your_password",
     "To": "alerts@yourdomain.com"
-  },
-  "SlackSettings": {
-    "WebhookUrl": "https://hooks.slack.com/services/xxxx/yyyy/zzzz"
-  },
-  "TelegramSettings": {
-    "TelegramToken": "your_telegram_token",
-    "ChatId": "your_telegram_chat_id"
   }
 }
 ```
-```
+
+```csharp
 public class SmtpEmailNotifier : IExceptionNotifier
 {
     private readonly EmailSettings _settings;
@@ -293,18 +300,21 @@ services.AddSingleton<IErrorMessageLocalizer, CustomErrorMessageLocalizer>();
 
 ### معرفی
 
-پکیج **Mehran.SmartGlobalExceptionHandling.Core** برای مدیریت و کنترل خطاها در پروژه‌های .NET Core طراحی شده است. این پکیج قابلیت ثبت، گزارش، و ارسال اعلان در صورت وقوع خطا را دارد.
+**Mehran.SmartGlobalExceptionHandling.Core** یک پکیج قدرتمند برای مدیریت و کنترل خطاها در پروژه‌های .NET Core است. این پکیج قابلیت ثبت، گزارش‌گیری و ارسال اعلان خطاها (با پشتیبانی از چند زبان: فارسی، انگلیسی و عربی) را فراهم می‌کند.
 
 ---
 
 ### ✅ ویژگی‌ها
 
-- 🚨 پشتیبانی از خطاهای سیستمی، تجاری، شبکه‌ای و...
-- 🌍 پشتیبانی از سه زبان (فارسی، انگلیسی، عربی)
-- 🔔 ارسال اعلان از طریق ایمیل، تلگرام و Slack
-- 🧾 امکان لاگ‌گیری با سری لاگ، ELK و لاگر سفارشی
-- 💾 ذخیره خطاها در دیتابیس
-- ⚙️ قابل توسعه و سفارشی‌سازی
+- 🚨 **مدیریت متمرکز خطا:** پشتیبانی از خطاهای سیستمی، تجاری، شبکه‌ای و غیره.
+- 🌍 **پشتیبانی چندزبانه:** پیام‌های خطا به زبان‌های فارسی، انگلیسی و عربی.  
+- 🔔 **سیستم اعلان:** ارسال اعلان خطا از طریق ایمیل، تلگرام و Slack.
+- 🧾 **لاگ‌گیری پلاگین‌پذیر:** پشتیبانی از لاگ‌گیری با کنسول، Serilog، ELK و سایر ابزارها.
+- 💾 **ذخیره اختیاری:** امکان ذخیره خطاها در پایگاه داده.
+- ⚙️ **تنظیم و توسعه آسان:** راه‌اندازی سریع و تنظیمات سفارشی.
+- ⭐ **پشتیبانی پیشرفته از FluentValidation**  
+  پیکربندی خودکار اختیاری زبان پیام‌های اعتبارسنجی بر مبنای تنظیمات انتخاب‌شده.  
+  *(توجه: پکیج Mehran.SmartGlobalExceptionHandling.Core باید نسخه ۱.۰.۶ یا بالاتر باشد.)*
 
 ---
 
@@ -323,6 +333,10 @@ services.AddExceptionHandling(options =>
 {
     options.ShowDetails = true;
     options.LogExceptions = true;
+options.Language = SupportedLanguage.En; // Change language (En, Fa, Ar)
+        options.HandleFluentValidationErrors = true;      // Enable FluentValidation error handling
+        options.ConfigureFluentValidationLanguage = true;   // Automatically configure FluentValidation language
+    });
 });
 
 services.AddSingleton<IExceptionNotifier, SmtpEmailNotifier>();
@@ -332,10 +346,13 @@ services.AddSingleton<IExceptionNotifier, TelegramNotificationNotifier>();
 services.Configure<EmailSettings>(Configuration.GetSection("EmailSettings"));
 ```
 
-## 🚀 نمونه استفاده
-برای تست عملکرد پکیج، می‌تونید از کنترلر زیر استفاده کنید:
-```
+---
 
+### 🚀 نمونه استفاده
+
+یک کنترلر نمونه برای تست مدیریت خطا:
+
+```csharp
 [ApiController]
 [Route("api/[controller]")]
 public class TestController : ControllerBase
@@ -352,11 +369,11 @@ public class TestController : ControllerBase
         throw new ApplicationException("این یک خطای سفارشی برنامه است.");
     }
 }
-
- ```
-## در صورتی که ShowDetails = true باشد، خروجی مشابه زیر دریافت می‌شود:
-
 ```
+
+#### مثال پاسخ (در صورت فعال بودن ShowDetails)
+
+```json
 {
   "statusCode": 400,
   "message": "اعتبارسنجی انجام نشد.",
@@ -380,48 +397,48 @@ public class TestController : ControllerBase
 }
 ```
 
-## 🔍 متا دیتا چیست؟
+---
 
-ویژگی MetaData در کلاس ErrorResponse<T> یک پارامتر جنریک است که برای ارسال اطلاعات اضافه یا سفارشی همراه با پاسخ خطا استفاده می‌شود. این قابلیت باعث می‌شود پاسخ‌های API شما انعطاف‌پذیرتر و معنادارتر باشند.
+### 🔍 متا دیتا چیست؟
 
-✅ کاربردها:
-ارسال اطلاعات کاربر هنگام خطای لاگین
+ویژگی **MetaData** در کلاس `ErrorResponse<T>` به‌عنوان یک پارامتر جنریک به شما اجازه می‌دهد اطلاعات اضافی یا سفارشی را همراه با پاسخ خطا ارسال کنید.  
+**کاربردها:**  
+- ارسال اطلاعات کاربر هنگام خطای ورود  
+- افزودن اطلاعات اشکال‌زدایی یا محیط اجرا  
+- ارسال داده‌های مرتبط با عملیاتی که با خطا مواجه شده است
 
-اضافه کردن اطلاعات اشکال‌زدایی یا محیط اجرا
+به عنوان مثال:
 
-ارسال داده‌های مرتبط با عملیاتی که با خطا مواجه شده است
-
-```
+```csharp
 public class ErrorResponse<UserInfo>
 {
     public UserInfo MetaData { get; set; }
 }
 ```
-📌 شما می‌توانید هر نوع مدلی را به صورت T استفاده کنید مثل:
-
-UserInfo
-
-OrderDetails
-
-ErrorDebugInfo
 
 ---
 
-## 🔎 ElasticSearch Or 🗄 DataBase
-```
+### 🔎 ElasticSearch یا پایگاه داده
+
+مثال یک لاگر سفارشی:
+
+```csharp
 public class MyCustomLogger : IExceptionLogger
 {
     public void Log(Exception exception)
     {
-      // Send logs to ElasticSearch or any other service
-      // For example, using HTTP Client, or writing directly to file/database
+        // ارسال لاگ به ElasticSearch یا هر سرویس دیگری
     }
 }
+```
 
-```
-```
+ثبت لاگر:
+
+```csharp
 builder.Services.AddSingleton<IExceptionLogger, MyCustomLogger>();
 ```
+
+---
 
 ### فایل تنظیمات appsettings.json
 
@@ -447,30 +464,36 @@ builder.Services.AddSingleton<IExceptionLogger, MyCustomLogger>();
 
 ---
 
+### نمونه‌های اعلان
+
+#### 📧 ایمیل
+
 ```csharp
 public class SmtpEmailNotifier : IExceptionNotifier
 {
-    // مشابه انگلیسی
+    // مشابه نسخه انگلیسی
 }
 ```
 
-💬 **Slack**:
+#### 💬 Slack
 
 ```csharp
 public class SlackNotificationNotifier : IExceptionNotifier
 {
-    // مشابه انگلیسی
+    // مشابه نسخه انگلیسی
 }
 ```
 
-📲 **تلگرام**:
+#### 📲 تلگرام
 
 ```csharp
 public class TelegramNotificationNotifier : IExceptionNotifier
 {
-    // مشابه انگلیسی
+    // مشابه نسخه انگلیسی
 }
 ```
+
+Made with ❤️ by Mehran Ghaederahmat
 
 ---
 
@@ -484,11 +507,15 @@ public class TelegramNotificationNotifier : IExceptionNotifier
 
 ### ✅ الميزات
 
-- 🚨 إدارة جميع أنواع الاستثناءات
-- 🌍 دعم للغة العربية والفارسية والإنجليزية
-- 🔔 تنبيهات عبر البريد الإلكتروني، Slack، Telegram
-- 🧾 دعم أنظمة تسجيل مختلفة
-- ⚙️ قابل للتخصيص والتوسيع
+- 🚨 **إدارة مركزية للاستثناءات:** التقاط وإدارة جميع أنواع الأخطاء (النظامية، التجارية، الشبكية، وغيرها).
+- 🌍 **دعم متعدد اللغات:** رسائل خطأ بلغات عربية، فارسية وإنجليزية.
+- 🔔 **نظام التنبيهات:** إرسال تنبيهات عبر البريد الإلكتروني، Telegram و Slack.
+- 🧾 **دعم تسجيل مرن:** متوافق مع أنظمة تسجيل متعددة مثل Serilog، ELK والمزيد.
+- 💾 **تخزين اختياري:** إمكانية حفظ الأخطاء في قواعد البيانات.
+- ⚙️ **تكوين وتوسعة سهلة:** إعداد سريع مع إمكانية تعديل الإعدادات.
+- ⭐ **دعم متقدم لـ FluentValidation**  
+  يحتوي على تكوين تلقائي اختياري للغة رسائل التحقق بناءً على الإعدادات.  
+  *(تنبيه: يجب أن تكون نسخة Mehran.SmartGlobalExceptionHandling.Core المكتبة 1.0.6 أو أحدث.)*
 
 ---
 
@@ -507,6 +534,10 @@ services.AddExceptionHandling(options =>
 {
     options.ShowDetails = true;
     options.LogExceptions = true;
+options.Language = SupportedLanguage.En; // Change language (En, Fa, Ar)
+        options.HandleFluentValidationErrors = true;      // Enable FluentValidation error handling
+        options.ConfigureFluentValidationLanguage = true;   // Automatically configure FluentValidation language
+    });
 });
 
 services.AddSingleton<IExceptionNotifier, SmtpEmailNotifier>();
@@ -516,11 +547,13 @@ services.AddSingleton<IExceptionNotifier, TelegramNotificationNotifier>();
 services.Configure<EmailSettings>(Configuration.GetSection("EmailSettings"));
 ```
 
-## 🚀 مثال للاستخدام
-قم بإضافة Controller للاختبار كما يلي:
-
 ---
-```
+
+### 🚀 مثال للاستخدام
+
+أضف Controller للاختبار كما يلي:
+
+```csharp
 [ApiController]
 [Route("api/[controller]")]
 public class TestController : ControllerBase
@@ -537,12 +570,11 @@ public class TestController : ControllerBase
         throw new ApplicationException("هذا خطأ مخصص من التطبيق.");
     }
 }
-
 ```
 
-## مع تفعيل ShowDetails = true، تكون الاستجابة كالتالي:
+#### مثال الاستجابة (في حال تفعيل ShowDetails)
 
-```
+```json
 {
   "statusCode": 400,
   "message": "فشل التحقق من الصحة.",
@@ -554,7 +586,7 @@ public class TestController : ControllerBase
     },
     {
       "field": "Password",
-      "error": "كلمة المرور يجب أن تكون 6 أحرف على الأقل."
+      "error": "يجب أن تكون كلمة المرور مكونة من 6 أحرف على الأقل."
     }
   ],
   "traceId": "e7fa2bcf-4724-43de-9d5b-9e2c4d44473c",
@@ -564,51 +596,52 @@ public class TestController : ControllerBase
     "userName": "john_doe"
   }
 }
-
 ```
 
-## 🔍 ما هو MetaData؟
+---
 
-خاصية MetaData في الكلاس ErrorResponse<T> هي نوع عام (Generic) يُستخدم لإرفاق معلومات إضافية أو مخصصة مع رسالة الخطأ، مما يمنحك مرونة أعلى في تصميم واجهة برمجة التطبيقات (API).
+### 🔍 ما هو MetaData؟
 
-✅ أمثلة الاستخدام:
-إرسال معلومات المستخدم عند فشل تسجيل الدخول
+خاصية **MetaData** في الكلاس `ErrorResponse<T>` تُستخدم لإرفاق معلومات إضافية أو مخصصة مع رسالة الخطأ.  
+**الاستخدامات:**  
+- إرسال معلومات المستخدم عند فشل عملية تسجيل الدخول.  
+- تضمين بيانات التصحيح أو معلومات البيئة.  
+- إرسال بيانات إضافية متعلقة بالعملية التي فشلت.
 
-تضمين بيانات تصحيح الأخطاء أو معلومات البيئة
+على سبيل المثال:
 
-إرسال تفاصيل إضافية متعلقة بالعملية التي فشلت
-
-```
+```csharp
 public class ErrorResponse<UserInfo>
 {
     public UserInfo MetaData { get; set; }
 }
 ```
-📌 يمكنك تمرير أي كائن كنوع T مثل:
 
-UserInfo
+---
 
-OrderDetails
+### 🔎 ElasticSearch أو قاعدة بيانات
 
-ErrorDebugInfo
+مثال على كلاس Logger مخصص:
 
-
-## 🔎 ElasticSearch Or 🗄 DataBase
-```
+```csharp
 public class MyCustomLogger : IExceptionLogger
 {
     public void Log(Exception exception)
     {
-      // Send logs to ElasticSearch or any other service
-      // For example, using HTTP Client, or writing directly to file/database
+        // إرسال السجلات إلى ElasticSearch أو أي خدمة أخرى
     }
 }
+```
 
-```
-```
+وتسجيله:
+
+```csharp
 builder.Services.AddSingleton<IExceptionLogger, MyCustomLogger>();
 ```
-### إعدادات `appsettings.json`
+
+---
+
+### إعدادات ملف appsettings.json
 
 ```json
 {
@@ -634,7 +667,7 @@ builder.Services.AddSingleton<IExceptionLogger, MyCustomLogger>();
 
 ### أمثلة على التنبيهات
 
-📧 **البريد الإلكتروني**:
+#### 📧 البريد الإلكتروني
 
 ```csharp
 public class SmtpEmailNotifier : IExceptionNotifier
@@ -643,7 +676,7 @@ public class SmtpEmailNotifier : IExceptionNotifier
 }
 ```
 
-💬 **Slack**:
+#### 💬 Slack
 
 ```csharp
 public class SlackNotificationNotifier : IExceptionNotifier
@@ -652,7 +685,7 @@ public class SlackNotificationNotifier : IExceptionNotifier
 }
 ```
 
-📲 **Telegram**:
+#### 📲 Telegram
 
 ```csharp
 public class TelegramNotificationNotifier : IExceptionNotifier
@@ -660,6 +693,7 @@ public class TelegramNotificationNotifier : IExceptionNotifier
     // كما هو موضح في القسم الإنجليزي
 }
 ```
-Made with ❤️ by Mehran Ghaederahmat
----
 
+Made with ❤️ by Mehran Ghaederahmat
+
+---
